@@ -1,0 +1,6 @@
+janak, 1, 223.0, accepted, vendor notified, 2025-02-15, thukpa:1;chowmein:1;
+ram, 1, 100.0, cancelled by vendor, vendor notified, 2025-02-16, item5:2;
+janak1, 1, 100.0, cancelled by vendor, vendor notified, 2025-02-16, item5:2;
+janak, 1, 103.0, cancelled by vendor, vendor notified, 2025-02-16, item56:2;
+janak2, 1, 100.0, accepted, vendor notified, 2025-02-16, item5:2;
+janak, 1, 60.0, accepted, vendor notified, 2025-02-16, item3:2;
