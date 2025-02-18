@@ -89,13 +89,17 @@ public class Customer {
         deductCredit(customerUsername, totalPrice);
     }
 
-    public ArrayList<String> getOrder(String username) {
+    public ArrayList<String> getOrder(String username, boolean toCancel, boolean isDelivered) {
         ArrayList<String> orders = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("src/Database/Orders.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(", ");
-                if (data.length > 1 && data[0].equals(username) && (data[3].equals("accepted") || data[3].equals("pending") || data[3].equals("cancelled by vendor"))) {
+                if (!toCancel && !isDelivered && data.length > 1 && data[0].equals(username) && (data[3].equals("accepted") || data[3].equals("pending") || data[3].equals("cancelled by vendor"))) {
+                    orders.add(line);
+                } else if (toCancel && !isDelivered && data.length > 1 && data[0].equals(username) && data[3].equals("pending")) {
+                    orders.add(line);
+                } else if (!toCancel && isDelivered && data.length > 1 && data[0].equals(username) && data[3].equals("delivered")) {
                     orders.add(line);
                 }
             }
@@ -110,7 +114,7 @@ public class Customer {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(", ");
-                ArrayList<String> getOrder = getOrder(data[0]);
+                ArrayList<String> getOrder = getOrder(data[0],false, false);
                 if ((line.equals(getOrder.get(1)) || line.equals(getOrder.get(2)) || line.equals(getOrder.get(3))) && (line.split(", ")[3].equals("accepted") || line.split(", ")[3].equals("pending") || line.split(", ")[3].equals("cancelled by vendor"))) {
                     return getOrder.get(3) + data[3];
                 } else {
@@ -123,6 +127,39 @@ public class Customer {
         return null;
     }
 
+    public void cancelOrder(String username, String order) {
+        File inputFile = new File("src/Database/Orders.txt");
+        File tempFile = new File("src/Database/Orders_temp.txt");
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.equals(order)) {
+                    String[] parts = line.split(", ");
+                    parts[3] = "cancelled by customer";
+                    writer.write(String.join(", ", parts) + System.lineSeparator());
+                } else {
+                    writer.write(line + System.lineSeparator());
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        inputFile.delete();
+        tempFile.renameTo(inputFile);
+    }
+
+
+    public void addFeedback(String order, String feedback) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/Database/Feedback.txt", true))) {
+            writer.write(order + " -> " + feedback + System.lineSeparator());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 

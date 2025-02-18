@@ -1,2 +1,2 @@
-janak, janak, asdf, 380
+janak, janak, asdf, -512.0
 ram, ram, asdf, 900

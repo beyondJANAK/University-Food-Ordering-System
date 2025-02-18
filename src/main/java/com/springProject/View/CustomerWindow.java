@@ -5,9 +5,11 @@ import com.springProject.DataHandling.Customer;
 import com.springProject.DataHandling.Vendor;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.*;
 
 public class CustomerWindow extends Components {
@@ -280,9 +282,18 @@ public class CustomerWindow extends Components {
         statusLabel.setForeground(Color.WHITE);
         panel.add(statusLabel);
 
-        ArrayList<String> orders = customer.getOrder(usernameField.getText());
+        ArrayList<String> orders = customer.getOrder(usernameField.getText(), false, false);
         if (orders == null || orders.isEmpty()) {
-            JOptionPane.showMessageDialog(frame, "No orders found.");
+            JLabel noOrderLabel = new JLabel("No orders found!");
+            noOrderLabel.setBounds(20, 70, 400, 30);
+            noOrderLabel.setForeground(Color.WHITE);
+            panel.add(noOrderLabel);
+
+            frame.getContentPane().add(panel);
+            currentPanel = panel;
+            frame.revalidate();
+            frame.repaint();
+            frame.setVisible(true);
             return;
         }
 
@@ -296,7 +307,16 @@ public class CustomerWindow extends Components {
         }
 
         if (lastOrder == null) {
-            JOptionPane.showMessageDialog(frame, "No orders found for today.");
+            JLabel noOrderLabel = new JLabel("No orders available for today!");
+            noOrderLabel.setBounds(20, 70, 400, 30);
+            noOrderLabel.setForeground(Color.WHITE);
+            panel.add(noOrderLabel);
+
+            frame.getContentPane().add(panel);
+            currentPanel = panel;
+            frame.revalidate();
+            frame.repaint();
+            frame.setVisible(true);
             return;
         }
 
@@ -314,9 +334,243 @@ public class CustomerWindow extends Components {
     }
 
     private void cancelOrder(MyFrame frame) {
+        if (currentPanel != null) frame.getContentPane().remove(currentPanel);
+        if (currentScrollPane != null) frame.getContentPane().remove(currentScrollPane);
+
+        JPanel panel = super.createPanel(null, 180, 10, 400, 550);
+        panel.setBackground(frame.getContentPane().getBackground());
+
+        JLabel statusLabel = new JLabel("Cancel Order:");
+        statusLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        statusLabel.setBounds(80, 15, 200, 30);
+        statusLabel.setForeground(Color.WHITE);
+        panel.add(statusLabel);
+
+        ArrayList<String> orders = customer.getOrder(usernameField.getText(), true, false);
+        if (orders == null || orders.isEmpty()) {
+            JLabel noOrderLabel = new JLabel("No orders available!");
+            noOrderLabel.setBounds(20, 70, 400, 30);
+            noOrderLabel.setForeground(Color.WHITE);
+            panel.add(noOrderLabel);
+
+            frame.getContentPane().add(panel);
+            currentPanel = panel;
+            frame.revalidate();
+            frame.repaint();
+            frame.setVisible(true);
+            return;
+        }
+
+        final String lastOrder = orders.stream()
+                .filter(order -> {
+                    String[] data = order.split(", ");
+                    return data.length > 5 && LocalDate.parse(data[5]).equals(LocalDate.now());
+                })
+                .reduce((first, second) -> second)
+                .orElse(null);
+
+        if (lastOrder == null) {
+            JLabel noOrderLabel = new JLabel("No orders available for today");
+            noOrderLabel.setBounds(20, 70, 400, 30);
+            noOrderLabel.setForeground(Color.WHITE);
+            panel.add(noOrderLabel);
+
+            frame.getContentPane().add(panel);
+            currentPanel = panel;
+            frame.revalidate();
+            frame.repaint();
+            frame.setVisible(true);
+            return;
+        }
+
+        JLabel orderDetailsLabel = new JLabel("<html><pre>"  + "You ordered: " + lastOrder.split(", ")[6] + "<br>from " + lastOrder.split(", ")[1] + " at $" + lastOrder.split(", ")[2] + " on " + lastOrder.split(", ")[5] + "<br><br> >> Status: " +  lastOrder.split(", ")[3] +  "</pre></html>");
+        orderDetailsLabel.setBounds(20, 7, 400, 200);
+        orderDetailsLabel.setForeground(Color.WHITE);
+        panel.add(orderDetailsLabel);
+
+        JButton cancelButton = super.createButton("Cancel Order", 25, 170, 90, 32, null);
+        cancelButton.addActionListener(e -> {
+            customer.cancelOrder(usernameField.getText(), lastOrder);
+            JOptionPane.showMessageDialog(frame, "Order canceled successfully.");
+            cancelOrder(frame);
+        });
+        panel.add(cancelButton);
+
+        frame.getContentPane().add(panel);
+        currentPanel = panel;
+
+        frame.revalidate();
+        frame.repaint();
+        frame.setVisible(true);
     }
 
     private void orderHistory(MyFrame frame) {
+        if (currentPanel != null) frame.getContentPane().remove(currentPanel);
+        if (currentScrollPane != null) frame.getContentPane().remove(currentScrollPane);
+
+        JPanel panel = super.createPanel("Order History", 130, 40, 400, 550);
+        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Order History", TitledBorder.LEFT, TitledBorder.TOP, new Font("Arial", Font.BOLD, 14), Color.WHITE));
+        panel.setLayout(null);
+
+        // Wrap panel inside a scroll pane with conditional scrolling
+        JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setBounds(190, 20, 450, 500);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBackground(frame.getContentPane().getBackground());
+
+        // Filter options
+        String[] filterOptions = {"All", "Daily", "Monthly", "Quarterly"};
+        JComboBox<String> filterComboBox = new JComboBox<>(filterOptions);
+        filterComboBox.setBounds(7, 25, 100, 30);
+        panel.add(filterComboBox);
+
+        filterComboBox.addActionListener(e -> {
+            String selectedFilter = (String) filterComboBox.getSelectedItem();
+            ArrayList<String> orders = new ArrayList<>();
+            // Implement quarterly filter logic
+            assert selectedFilter != null;
+            switch (selectedFilter) {
+                case "All" -> {
+                    orders = customer.getOrder(usernameField.getText(), false, true);
+                    displayOrders(panel, orders);
+                }
+
+                case "Daily" -> {
+                    ArrayList<String> dailyOrders = new ArrayList<>();
+                    for (String order : customer.getOrder(usernameField.getText(), false, true)) {
+                        if (isToday(order.split(", ")[5])) {
+                            dailyOrders.add(order);
+                        }
+                    }
+                    displayOrders(panel, dailyOrders);
+                }
+                case "Monthly" -> {
+                    ArrayList<String> monthlyOrders = new ArrayList<>();
+                    for (String order : customer.getOrder(usernameField.getText(), false, true)) {
+                        if (isThisMonth(order.split(", ")[5])) {
+                            monthlyOrders.add(order);
+                        }
+                    }
+                    displayOrders(panel, monthlyOrders);
+                }
+                case "Quarterly" -> {
+                    ArrayList<String> quarterlyOrders = new ArrayList<>();
+                    for (String order : customer.getOrder(usernameField.getText(), false, true)) {
+                        if (isThisQuarter(order.split(", ")[5])) {
+                            quarterlyOrders.add(order);
+                        }
+                    }
+                    displayOrders(panel, quarterlyOrders);
+                }
+                default -> {
+                    orders = customer.getOrder(usernameField.getText(), false, true);
+                    displayOrders(panel, orders);
+                }
+            }
+        });
+
+        // Display all orders initially
+        ArrayList<String> allOrders = customer.getOrder(usernameField.getText(), false, true);
+        displayOrders(panel, allOrders);
+
+        frame.getContentPane().add(scrollPane, JLayeredPane.POPUP_LAYER);
+        currentPanel = panel;
+        currentScrollPane = scrollPane;
+
+        frame.revalidate();
+        frame.repaint();
+        frame.setVisible(true);
+    }
+
+    private void displayOrders(JPanel panel, ArrayList<String> orders) {
+        // Remove only order-related components, not the filterComboBox
+        Component[] components = panel.getComponents();
+        for (Component c : components) {
+            if (c instanceof JLabel || c instanceof JButton) {
+                panel.remove(c);
+            }
+        }
+
+        int yPosition = 72; // Start below the combobox
+        int maxHeight = yPosition;
+
+        int count = 1;
+        for (String order : orders) {
+            JLabel orderLabel = new JLabel("<html><pre>" + count +  ". In " + order.split(", ")[5] + " " + order.split(", ")[0] + " ordered <br>" + "   " + Arrays.toString(order.split(", ")[6].split(";")) +
+                    "<br>   for $" + order.split(", ")[2] + ".</pre></html>");
+            orderLabel.setBounds(0, yPosition, 300, 45);
+            orderLabel.setForeground(Color.WHITE);
+            panel.add(orderLabel);
+            count++;
+
+            JButton reorderButton = super.createButton("Reorder", 302, yPosition, 80, 20, null);
+            reorderButton.addActionListener(e -> {
+                String[] orderData = order.split(", ");
+                if (orderData.length < 7) {
+                    JOptionPane.showMessageDialog(frame, "Invalid order data format", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                String vendorName = orderData[1];
+                String items = orderData[6];
+                HashMap<String, Integer> cart = new HashMap<>();
+                try {
+                    for (String item : items.split(";")) {
+                        if (!item.isEmpty()) {
+                            String[] itemParts = item.split(":");
+                            if (itemParts.length == 2) {
+                                cart.put(itemParts[0], Integer.parseInt(itemParts[1]));
+                            }
+                        }
+                    }
+                    double totalPrice = Double.parseDouble(orderData[2]);
+                    customer.placeOrder(usernameField.getText(), vendorName, cart, totalPrice, "pending");
+                    JOptionPane.showMessageDialog(frame, "Order has been reordered successfully!");
+
+                    // Refresh the orders display after reordering
+                    ArrayList<String> updatedOrders = customer.getOrder(usernameField.getText(), false, true);
+                    displayOrders(panel, updatedOrders);
+                } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {
+                    JOptionPane.showMessageDialog(frame, "Error processing order data", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            });
+            panel.add(reorderButton);
+
+            JButton feedbackButton = super.createButton("Feedback", 302, yPosition + 22, 80, 20, null);
+            feedbackButton.addActionListener(e -> {
+                String feedback = JOptionPane.showInputDialog(frame, "Please enter your feedback for this order:", "Order Feedback", JOptionPane.PLAIN_MESSAGE);
+                if (feedback != null && !feedback.trim().isEmpty()) {
+                    customer.addFeedback(order, feedback);
+                    JOptionPane.showMessageDialog(frame, "Thank you for your feedback!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                }
+            });
+            panel.add(feedbackButton);
+
+            yPosition += 55;
+            maxHeight = yPosition;
+        }
+
+        panel.setPreferredSize(new Dimension(400, Math.max(400, maxHeight)));
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    private boolean isToday(String date) {
+        LocalDate inputDate = LocalDate.parse(date);
+        LocalDate today = LocalDate.now();
+        return inputDate.isEqual(today);
+    }
+    private boolean isThisMonth(String date) {
+        LocalDate inputDate = LocalDate.parse(date);
+        YearMonth currentMonth = YearMonth.now();
+        YearMonth inputMonth = YearMonth.from(inputDate);
+        return inputMonth.equals(currentMonth);
+    }
+    private boolean isThisQuarter(String date) {
+        LocalDate inputDate = LocalDate.parse(date);
+        LocalDate now = LocalDate.now();
+        int currentQuarter = (now.getMonthValue() - 1) / 3 + 1;
+        int inputQuarter = (inputDate.getMonthValue() - 1) / 3 + 1;
+        return inputDate.getYear() == now.getYear() && inputQuarter == currentQuarter;
     }
 
     private void transactionHistory(MyFrame frame) {

@@ -154,13 +154,17 @@ public class Vendor {
         tempFile.renameTo(inputFile);
     }
 
-    public ArrayList<String> getOrder(String username) {
+    public ArrayList<String> getOrder(String username, boolean isPending, boolean isDelivered) {
         ArrayList<String> orders = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("src/Database/Orders.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] data = line.split(", ");
-                if (data.length > 1 && data[1].equals(username) && data[3].equals("pending")) {
+                if (isPending && !isDelivered && data.length > 1 && data[1].equals(username) && data[3].equals("pending")) {
+                    orders.add(line);
+                } else if (!isPending && !isDelivered && data.length > 1 && data[1].equals(username) && (data[3].equals("accepted") || data[3].equals("being prepared") || data[3].equals("taken by runner") || data[3].equals("being delivered"))) {
+                    orders.add(line);
+                } else if (!isPending && isDelivered && data.length > 1 && data[1].equals(username) && data[3].equals("delivered")) {
                     orders.add(line);
                 }
             }
@@ -194,4 +198,7 @@ public class Vendor {
         inputFile.delete();
         tempFile.renameTo(inputFile);
     }
+
+
+
 }

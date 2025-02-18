@@ -1,6 +1,9 @@
-janak, 1, 223.0, accepted, vendor notified, 2025-02-15, thukpa:1;chowmein:1;
+janak, 1, 223.0, delivered, vendor notified, 2025-02-18, thukpa:1;chowmein:1;
+janak, 1, 223.0, delivered, vendor notified, 2025-02-15, thukpa:1;chowmein:1;
+janak, 1, 223.0, delivered, vendor notified, 2025-01-15, thukpa:1;chowmein:1;
 ram, 1, 100.0, cancelled by vendor, vendor notified, 2025-02-16, item5:2;
 janak1, 1, 100.0, cancelled by vendor, vendor notified, 2025-02-16, item5:2;
-janak, 1, 103.0, cancelled by vendor, vendor notified, 2025-02-16, item56:2;
-janak2, 1, 100.0, accepted, vendor notified, 2025-02-16, item5:2;
-janak, 1, 60.0, accepted, vendor notified, 2025-02-16, item3:2;
+janak, 1, 60.0, being prepared, vendor notified, 2025-02-18, item3:2;
+janak, 1, 103.0, cancelled by customer, vendor notified, 2025-02-18, item56:2;
+janak, 1, 60.0, pending, vendor notified, 2025-02-18, item3:2;
+janak, 3, 223.0, pending, vendor not notified, 2025-02-18, thukpa:1;chowmein:1;
