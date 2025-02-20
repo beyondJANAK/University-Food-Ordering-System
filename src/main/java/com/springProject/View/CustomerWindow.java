@@ -574,6 +574,59 @@ public class CustomerWindow extends Components {
     }
 
     private void transactionHistory(MyFrame frame) {
+        if (currentPanel != null) frame.getContentPane().remove(currentPanel);
+        if (currentScrollPane != null) frame.getContentPane().remove(currentScrollPane);
+
+        JPanel panel = super.createPanel("Transaction History", 130, 40, 400, 550);
+        panel.setLayout(null);
+
+        // Wrap panel inside a scroll pane with conditional scrolling
+        JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setBounds(190, 20, 450, 500);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBackground(frame.getContentPane().getBackground());
+
+        ArrayList<String> transactions = customer.getTransactionHistory(usernameField.getText());
+        if (transactions == null || transactions.isEmpty()) {
+            JLabel noTransactionLabel = new JLabel("No transactions found!");
+            noTransactionLabel.setBounds(80, 40, 400, 30);
+            noTransactionLabel.setForeground(Color.WHITE);
+            panel.add(noTransactionLabel);
+
+            frame.getContentPane().add(panel);
+            currentPanel = panel;
+            frame.revalidate();
+            frame.repaint();
+            frame.setVisible(true);
+            return;
+        }
+
+        int yPosition = 69; // Start below the combobox
+        int maxHeight = yPosition;
+
+        int count = 1;
+        for (String transaction : transactions) {
+            JLabel transactionLabel = new JLabel("<html><pre>" + count +  ". On " + transaction.split(", ")[5] + ", you ordered <br>   " + transaction.split(", ")[6] + " of $" + transaction.split(", ")[2] + " from " + transaction.split(", ")[1] + ".</pre></html>");
+            transactionLabel.setBounds(0, yPosition, 300, 30);
+            transactionLabel.setForeground(Color.WHITE);
+            panel.add(transactionLabel);
+            count++;
+
+            yPosition += 40;
+            maxHeight = yPosition;
+        }
+
+        panel.setPreferredSize(new Dimension(400, Math.max(400, maxHeight)));
+        panel.revalidate();
+        panel.repaint();
+
+        frame.getContentPane().add(scrollPane, JLayeredPane.POPUP_LAYER);
+        currentPanel = panel;
+        currentScrollPane = scrollPane;
+
+        frame.revalidate();
+        frame.repaint();
+        frame.setVisible(true);
     }
 
 

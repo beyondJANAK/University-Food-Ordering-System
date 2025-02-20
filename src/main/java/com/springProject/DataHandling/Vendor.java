@@ -199,6 +199,20 @@ public class Vendor {
         tempFile.renameTo(inputFile);
     }
 
-
+    public ArrayList<String> readReview(String vendorUsername) {
+        ArrayList<String> reviews = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/Database/Feedback.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(", ");
+                if (data.length > 1 && data[1].equals(vendorUsername)) {
+                    reviews.add(line);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return reviews;
+    }
 
 }

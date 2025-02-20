@@ -81,7 +81,8 @@ public class VendorWindow extends Components {
         super.addButtonToFrame(frame, "Accept/Cancel Order", 135, e -> acceptCancelOrder(frame));
         super.addButtonToFrame(frame, "Update Order Status", 185, e -> updateOrderStatus(frame));
         super.addButtonToFrame(frame, "Check Order History", 235, e -> orderHistory(frame));
-        super.addButtonToFrame(frame, "Revenue DashBoard", 285, e -> revenueDashboard(frame));
+        super.addButtonToFrame(frame, "Read Review", 285, e -> readReview(frame));
+        super.addButtonToFrame(frame, "Revenue DashBoard", 335, e -> revenueDashboard(frame));
 
         frame.setVisible(true);
 
@@ -452,7 +453,55 @@ public class VendorWindow extends Components {
 
 
     private void readReview(MyFrame frame) {
+        if (currentPanel != null) frame.getContentPane().remove(currentPanel);
+        if (currentScrollPane != null) frame.getContentPane().remove(currentScrollPane);
+
+        JPanel panel = super.createPanel("Reviews", 190, 20, 400, 550);
+
+        // Wrap panel inside a scroll pane with conditional scrolling
+        JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setBounds(190, 20, 450, 500);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBackground(frame.getContentPane().getBackground());
+
+        ArrayList<String> reviews = vendor.readReview(usernameField.getText());
+        if (reviews == null || reviews.isEmpty()) {
+            JLabel noReviewsLabel = new JLabel("No reviews available.");
+            noReviewsLabel.setBounds(0, 65, 400, 45);
+            noReviewsLabel.setForeground(Color.WHITE);
+            panel.add(noReviewsLabel);
+        } else {
+            int yPosition = 69;
+            int maxHeight = 20; // Track max height to adjust scrolling if needed
+            int count = 1;
+
+            for (String review : reviews) {
+                String[] reviewParts = review.split(" -> ");
+
+                JLabel reviewLabel = new JLabel("<html><pre>" + count + ". Order: " + reviewParts[0].split(", ")[6] + " from " + reviewParts[0].split(", ")[0] + ". <br>   Review: " + reviewParts[1] + "</pre></html>");
+                reviewLabel.setBounds(0, yPosition, 400, 30);
+                reviewLabel.setForeground(Color.WHITE);
+                panel.add(reviewLabel);
+                count++;
+
+                yPosition += 40;
+                maxHeight = yPosition; // Update max height
+
+            }
+
+            // Ensure the panel expands only if needed (for scrolling)
+            panel.setPreferredSize(new Dimension(400, Math.max(400, maxHeight)));
+        }
+
+        frame.getContentPane().add(scrollPane, JLayeredPane.POPUP_LAYER);
+        currentPanel = panel;
+        currentScrollPane = scrollPane;
+
+        frame.revalidate();
+        frame.repaint();
+        frame.setVisible(true);
     }
+
     private void revenueDashboard(MyFrame frame) {
     }
 

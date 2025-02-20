@@ -152,13 +152,28 @@ public class Customer {
         tempFile.renameTo(inputFile);
     }
 
-
     public void addFeedback(String order, String feedback) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/Database/Feedback.txt", true))) {
             writer.write(order + " -> " + feedback + System.lineSeparator());
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<String> getTransactionHistory(String username) {
+        ArrayList<String> transactions = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/Database/Orders.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(", ");
+                if (data.length > 1 && data[0].equals(username) && data[3].equals("delivered")) {
+                    transactions.add(line);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return transactions;
     }
 }
 
