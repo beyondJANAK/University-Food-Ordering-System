@@ -2,6 +2,7 @@ package com.springProject.DataHandling;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Vendor {
 
@@ -169,7 +170,7 @@ public class Vendor {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return orders;
     }
@@ -215,4 +216,35 @@ public class Vendor {
         return reviews;
     }
 
+    public String assignTaskToRunner(String vendorUsername, String order) {
+            File runnerFile = new File("src/Database/runner.txt");
+            File taskFile = new File("src/Database/TaskAssignedToRunner.txt");
+            ArrayList<String> runners = new ArrayList<>();
+
+            // Read runners from runner.txt
+            try (BufferedReader reader = new BufferedReader(new FileReader(runnerFile))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    runners.add(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Check if there are any runners available
+            if (runners.isEmpty()) {
+                return null;
+            }
+
+            // Select a random runner
+            String assignedRunner = runners.get(new Random().nextInt(runners.size()));
+
+            // Write the assigned task to TaskAssignedToRunner.txt
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(taskFile, true))) {
+                writer.write(assignedRunner.split(", ")[0] + " -> assigned -> " + order + System.lineSeparator());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return assignedRunner.split(", ")[0];
+        }
 }

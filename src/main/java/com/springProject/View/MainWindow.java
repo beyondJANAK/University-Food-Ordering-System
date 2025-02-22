@@ -5,6 +5,7 @@ import java.awt.*;
 
 public class MainWindow {
     JButton button;
+
     public MainWindow() {
         MyFrame frame = new MyFrame("Food Ordering System");
 
@@ -51,7 +52,4 @@ public class MainWindow {
         }
     }
 
-    public static void main(String[] args) {
-        new MainWindow();
-    }
 }

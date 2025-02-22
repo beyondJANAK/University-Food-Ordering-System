@@ -1,0 +1,5 @@
+runner -> assigned -> janak, 1, 103.0, assigned, vendor notified, 2025-02-18, item56:2;
+runner -> assigned -> janak, 1, 103.0, assigned, vendor notified, 2025-02-20, item16:2;
+runner -> assigned -> janak, 1, 223.0, delivered, vendor notified, 2025-02-15, thukpa:1;chowmein:1;
+run -> assigned -> janak, 1, 223.0, delivered, vendor notified, 2025-02-15, thukpa:1;chowmein:1;
+run -> assigned -> janak, 1, 223.0, delivered, vendor notified, 2025-02-15, thukpa:1;chowmein:1;

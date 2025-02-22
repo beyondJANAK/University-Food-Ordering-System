@@ -1,10 +1,11 @@
 package com.springProject.View;
 
+import com.springProject.DataHandling.Admin;
+import com.springProject.DataHandling.Customer;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import com.springProject.DataHandling.*;
+import java.util.ArrayList;
 
 public class AdminWindow extends Components {
     MyFrame frame;
@@ -155,7 +156,6 @@ public class AdminWindow extends Components {
         frame.setVisible(true);
     }
 
-
     private void registerVendor(MyFrame frame) {
         if (currentPanel != null) frame.getContentPane().remove(currentPanel);
 
@@ -226,7 +226,6 @@ public class AdminWindow extends Components {
         frame.repaint();
         frame.setVisible(true);
     }
-
 
     private void registerRunner(MyFrame frame) {
         if (currentPanel != null) frame.getContentPane().remove(currentPanel);

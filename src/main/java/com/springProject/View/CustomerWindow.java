@@ -81,7 +81,6 @@ public class CustomerWindow extends Components {
         frame.setVisible(true);
     }
 
-
     private void customerWork() {
         frame = new MyFrame("Customer Dashboard");
 
@@ -102,7 +101,6 @@ public class CustomerWindow extends Components {
             }
         }
     }
-
 
 
     private void placeOrder(MyFrame frame) {
@@ -629,8 +627,4 @@ public class CustomerWindow extends Components {
         frame.setVisible(true);
     }
 
-
-    public static void main(String[] args) {
-        new CustomerWindow();
-    }
 }

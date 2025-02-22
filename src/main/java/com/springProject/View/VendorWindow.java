@@ -71,7 +71,6 @@ public class VendorWindow extends Components {
         frame.setVisible(true);
     }
 
-
     private void vendorWork() {
         frame = new MyFrame("Vendor Dashboard");
 
@@ -88,6 +87,7 @@ public class VendorWindow extends Components {
 
         vendorNotification(frame);
     }
+
 
     private void vendorNotification(MyFrame frame) {
         String notification = vendor.notification(usernameField.getText());
@@ -215,7 +215,9 @@ public class VendorWindow extends Components {
             acceptButton.setBorder(BorderFactory.createEtchedBorder());
             acceptButton.addActionListener(e -> {
                 vendor.acceptCancelOrder(usernameField.getText(), order.split(", ")[0], order, "accepted");
-                JOptionPane.showMessageDialog(frame, "Order accepted successfully!");
+                String assignedRunner = vendor.assignTaskToRunner(usernameField.getText(), order);
+                if(assignedRunner != null) JOptionPane.showMessageDialog(frame, "Order accepted successfully! Runner assigned: " + assignedRunner);
+                else JOptionPane.showMessageDialog(frame, "<html>Order accepted successfully!<br>No runner available at the moment, deliver the order yourself.<br>");
                 acceptCancelOrder(frame); // Refresh the order list
             });
             panel.add(acceptButton);
@@ -265,7 +267,6 @@ public class VendorWindow extends Components {
             addUpdateItem(frame); // Refresh the item list
         }
     }
-
 
     private void updateOrderStatus(MyFrame frame) {
         if(currentPanel != null) frame.getContentPane().remove(currentPanel);
@@ -322,7 +323,6 @@ public class VendorWindow extends Components {
         frame.repaint();
         frame.setVisible(true);
     }
-
 
     private void orderHistory(MyFrame frame) {
         if (currentPanel != null) frame.getContentPane().remove(currentPanel);
@@ -451,7 +451,6 @@ public class VendorWindow extends Components {
         return inputDate.getYear() == now.getYear() && inputQuarter == currentQuarter;
     }
 
-
     private void readReview(MyFrame frame) {
         if (currentPanel != null) frame.getContentPane().remove(currentPanel);
         if (currentScrollPane != null) frame.getContentPane().remove(currentScrollPane);
@@ -503,10 +502,118 @@ public class VendorWindow extends Components {
     }
 
     private void revenueDashboard(MyFrame frame) {
+        if (currentPanel != null) frame.getContentPane().remove(currentPanel);
+        if (currentScrollPane != null) frame.getContentPane().remove(currentScrollPane);
+
+        JPanel panel = super.createPanel("Revenue Dashboard", 130, 40, 400, 550);
+        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Revenue Dashboard", TitledBorder.LEFT, TitledBorder.TOP, new Font("Arial", Font.BOLD, 14), Color.WHITE));
+        panel.setLayout(null);
+
+        // Wrap panel inside a scroll pane with conditional scrolling
+        JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setBounds(185, 20, 450, 500);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBackground(frame.getContentPane().getBackground());
+
+        // Filter options
+        String[] filterOptions = {"All", "Daily", "Monthly", "Quarterly"};
+        JComboBox<String> filterComboBox = new JComboBox<>(filterOptions);
+        filterComboBox.setBounds(7, 25, 100, 30);
+        panel.add(filterComboBox);
+
+        filterComboBox.addActionListener(e -> {
+            String selectedFilter = (String) filterComboBox.getSelectedItem();
+            ArrayList<String> orders = new ArrayList<>();
+            assert selectedFilter != null;
+            switch (selectedFilter) {
+                case "All" -> {
+                    orders = vendor.getOrder(usernameField.getText(), false, true);
+                    displayRevenue(panel, orders, filterComboBox);
+                }
+                case "Daily" -> {
+                    ArrayList<String> dailyOrders = new ArrayList<>();
+                    for (String order : vendor.getOrder(usernameField.getText(), false, true)) {
+                        if (isToday(order.split(", ")[5])) {
+                            dailyOrders.add(order);
+                        }
+                    }
+                    displayRevenue(panel, dailyOrders, filterComboBox);
+                }
+                case "Monthly" -> {
+                    ArrayList<String> monthlyOrders = new ArrayList<>();
+                    for (String order : vendor.getOrder(usernameField.getText(), false, true)) {
+                        if (isThisMonth(order.split(", ")[5])) {
+                            monthlyOrders.add(order);
+                        }
+                    }
+                    displayRevenue(panel, monthlyOrders, filterComboBox);
+                }
+                case "Quarterly" -> {
+                    ArrayList<String> quarterlyOrders = new ArrayList<>();
+                    for (String order : vendor.getOrder(usernameField.getText(), false, true)) {
+                        if (isThisQuarter(order.split(", ")[5])) {
+                            quarterlyOrders.add(order);
+                        }
+                    }
+                    displayRevenue(panel, quarterlyOrders, filterComboBox);
+                }
+                default -> {
+                    orders = vendor.getOrder(usernameField.getText(), false, true);
+                    displayRevenue(panel, orders, filterComboBox);
+                }
+            }
+        });
+
+        // Display all orders initially
+        ArrayList<String> allOrders = vendor.getOrder(usernameField.getText(), false, true);
+        displayRevenue(panel, allOrders, filterComboBox);
+
+        frame.getContentPane().add(scrollPane, JLayeredPane.POPUP_LAYER);
+        currentPanel = panel;
+        currentScrollPane = scrollPane;
+
+        frame.revalidate();
+        frame.repaint();
+        frame.setVisible(true);
     }
 
+    private void displayRevenue(JPanel panel, ArrayList<String> orders, JComboBox<String> filterComboBox) {
+        // Remove only order-related components, not the filterComboBox
+        Component[] components = panel.getComponents();
+        for (Component c : components) {
+            if (c instanceof JLabel && !c.equals(filterComboBox)) {
+                panel.remove(c);
+            }
+        }
 
-    public static void main(String[] args) {
-        new VendorWindow();
+        int yPosition = 72; // Start below the combobox
+        int maxHeight = yPosition;
+        double totalRevenue = 0.0;
+
+        int count = 1;
+        for (String order : orders) {
+            double orderRevenue = Double.parseDouble(order.split(", ")[2]) * 0.8; // Deduct 20%
+            totalRevenue += orderRevenue;
+
+            JLabel orderLabel = new JLabel("<html><pre>" + count +  ". In " + order.split(", ")[5] + " " + order.split(", ")[0] + " ordered <br>" + "   " + Arrays.toString(order.split(", ")[6].split(";")) +
+                    " for $" + order.split(", ")[2] + ". <br>=> Revenue after deducting runner's commission: $" + orderRevenue + ".</pre></html>");
+            orderLabel.setBounds(0, yPosition, 400, 55);
+            orderLabel.setForeground(Color.WHITE);
+            panel.add(orderLabel);
+            count++;
+
+            yPosition += 65;
+            maxHeight = yPosition;
+        }
+
+        JLabel totalRevenueLabel = new JLabel("Total Revenue: $" + totalRevenue);
+        totalRevenueLabel.setBounds(0, yPosition, 300, 45);
+        totalRevenueLabel.setForeground(Color.WHITE);
+        panel.add(totalRevenueLabel);
+
+        panel.setPreferredSize(new Dimension(400, Math.max(400, maxHeight)));
+        panel.revalidate();
+        panel.repaint();
     }
+
 }

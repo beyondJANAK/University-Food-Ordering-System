@@ -9,6 +9,7 @@ public class Admin {
         return username.equals("admin") && password.equals("admin");
     }
 
+
     public void saveCustomer(String username, String password, String email){
         try (FileWriter writer = new FileWriter("src/Database/Customer.txt", true)) {
             writer.write(username + ", " + password + ", " + email + ", " + "1000" + "\n");
@@ -90,7 +91,6 @@ public class Admin {
         }
         return usernames;
     }
-
 
     public void saveVendor(String username, String password, String email){
         try (FileWriter writer = new FileWriter("src/Database/Vendor.txt", true)) {
