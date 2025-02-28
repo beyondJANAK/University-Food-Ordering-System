@@ -26,7 +26,7 @@ public class MainWindow {
         button.setBounds(225, 310, 130, 50);
         button.addActionListener(e -> buttonAction(roleDropdown, frame));
         button.setFocusable(false);
-        button.setBackground(new Color(60, 61, 55));
+        button.setBackground(new Color(17, 72, 125));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 16));
         button.setBorder(BorderFactory.createEtchedBorder());

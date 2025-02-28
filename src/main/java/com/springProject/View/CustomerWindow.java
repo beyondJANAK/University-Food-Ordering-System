@@ -59,9 +59,9 @@ public class CustomerWindow extends Components {
         frame.add(passwordField);
 
         button = new JButton("Login");
-        button.setBounds(235, 325, 130, 50);
+        button.setBounds(245, 330, 100, 42);
         button.setFocusable(false);
-        button.setBackground(new Color(60, 61, 55));
+        button.setBackground(new Color(17, 72, 125));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 16));
         button.setBorder(BorderFactory.createEtchedBorder());
@@ -145,8 +145,12 @@ public class CustomerWindow extends Components {
 
         loadMenuButton.addActionListener(e ->  loadMenuActionListener(menuPanel, cart, prices, vendorComboBox));
 
+        JComboBox<String> orderTypeComboBox = new JComboBox<>(new String[]{"Dine-in", "Takeaway", "Request Delivery"});
+        orderTypeComboBox.setBounds(10, 470, 100, 32);
+        panel.add(orderTypeComboBox);
+
         JButton placeOrderButton = super.createButton("Place Order", 119, 470, 115, 32, null);
-        placeOrderButton.addActionListener(e -> placeOrderActionListener(frame, menuPanel, cart, prices, vendorComboBox));
+        placeOrderButton.addActionListener(e -> placeOrderActionListener(frame, menuPanel, cart, prices, vendorComboBox, orderTypeComboBox.getSelectedItem().toString()));
         panel.add(placeOrderButton);
 
         frame.getContentPane().add(scrollPane);
@@ -225,7 +229,7 @@ public class CustomerWindow extends Components {
         }
     }
 
-    private void placeOrderActionListener(MyFrame frame, JPanel menuPanel, HashMap<String, Integer> cart, HashMap<String, Double> prices, JComboBox<String> vendorComboBox) {
+    private void placeOrderActionListener(MyFrame frame, JPanel menuPanel, HashMap<String, Integer> cart, HashMap<String, Double> prices, JComboBox<String> vendorComboBox, String orderType) {
         if (!cart.isEmpty()) {
             StringBuilder orderSummary = new StringBuilder("Your Order:\n");
             double totalPrice = 0;
@@ -248,7 +252,14 @@ public class CustomerWindow extends Components {
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
                     new String[]{"OK", "Cancel Order"}, null);
 
-            if (option == JOptionPane.OK_OPTION) {
+            if (option == JOptionPane.OK_OPTION && orderType.equals("Request Delivery")) {
+                customer.placeOrder(usernameField.getText(), (String) vendorComboBox.getSelectedItem(), cart, totalPrice, "pending");
+                cart.clear();
+                menuPanel.removeAll();
+                menuPanel.revalidate();
+                menuPanel.repaint();
+                JOptionPane.showMessageDialog(frame, "Order placed successfully!");
+            } else if (option == JOptionPane.OK_OPTION && (orderType.equals("Dine-in") || orderType.equals("Takeaway"))) {
                 customer.placeOrder(usernameField.getText(), (String) vendorComboBox.getSelectedItem(), cart, totalPrice, "pending");
                 cart.clear();
                 menuPanel.removeAll();
@@ -261,8 +272,7 @@ public class CustomerWindow extends Components {
                 menuPanel.revalidate();
                 menuPanel.repaint();
                 JOptionPane.showMessageDialog(frame, "Order canceled.");
-            }
-        } else {
+            } } else {
             JOptionPane.showMessageDialog(frame, "Cart is empty. Please add items to cart.");
         }
     }

@@ -52,9 +52,9 @@ public class RunnerWindow extends Components {
         frame.add(passwordField);
 
         button = new JButton("Login");
-        button.setBounds(235, 325, 130, 50);
+        button.setBounds(245, 330, 100, 42);
         button.setFocusable(false);
-        button.setBackground(new Color(60, 61, 55));
+        button.setBackground(new Color(17, 72, 125));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 16));
         button.setBorder(BorderFactory.createEtchedBorder());

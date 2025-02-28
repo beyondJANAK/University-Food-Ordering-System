@@ -25,11 +25,11 @@ public class Components {
     void addButtonToFrame(MyFrame frame, String text, int yPosition, ActionListener actionListener) {
         JButton button = new JButton(text);
         button.setBounds(10, yPosition, 160, 40);
-        button.setFocusable(false);
         button.setBackground(new Color(60, 61, 55));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 16));
         button.setBorder(BorderFactory.createEtchedBorder());
+        button.setFocusable(false);
         button.addActionListener(actionListener);
         frame.add(button);
     }
