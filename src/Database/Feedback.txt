@@ -1,4 +1,4 @@
-janak, 1, 223.0, delivered, vendor notified, 2025-02-18, thukpa:1;chowmein:1; -> This is the best food I have ever eaten
-janak, 1, 223.0, delivered, vendor notified, 2025-02-15, thukpa:1;chowmein:1; -> This food is shit
-janak, 1, 223.0, delivered, vendor notified, 2025-02-15, thukpa:1;chowmein:1; -> This food is shit
-
+janak, vendor1, 8.58, delivered, vendor notified, 2025-03-01, Ice Cream:1;Tacos:1; -> Best food.
+sadibya, vendor2, 107.49, delivered, vendor notified, 2025-03-01, Thukpa:1;d -> This is tasteless.
+janak, vendor1, 8.58, delivered, vendor notified, 2025-03-01, Ice Cream:1;Tacos:1; -> wow
+janak, vendor1, 109.99, delivered, vendor notified, 2025-03-01, Grilled Chicken:1;d -> so goood

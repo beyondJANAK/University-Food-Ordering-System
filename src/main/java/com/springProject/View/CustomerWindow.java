@@ -238,9 +238,16 @@ public class CustomerWindow extends Components {
                 int quantity = entry.getValue();
                 double itemPrice = prices.get(itemName);
                 totalPrice += itemPrice * quantity;
+                if(orderType.equals("Request Delivery")) {
+                    totalPrice += 100;
+                }
                 orderSummary.append(itemName).append(" - ").append(quantity).append(" x $").append(itemPrice).append("\n");
             }
-            orderSummary.append("Total Price: $").append(totalPrice);
+            if (orderType.equals("Request Delivery")) {
+                orderSummary.append("Total Price: $").append(totalPrice).append(" (including $100 delivery fee)");
+            } else {
+                orderSummary.append("Total Price: $").append(totalPrice);
+            }
 
             double customerCredit = customer.getCredit(usernameField.getText());
             if (customerCredit < totalPrice) {
@@ -253,14 +260,14 @@ public class CustomerWindow extends Components {
                     new String[]{"OK", "Cancel Order"}, null);
 
             if (option == JOptionPane.OK_OPTION && orderType.equals("Request Delivery")) {
-                customer.placeOrder(usernameField.getText(), (String) vendorComboBox.getSelectedItem(), cart, totalPrice, "pending");
+                customer.placeOrder(usernameField.getText(), (String) vendorComboBox.getSelectedItem(), cart, totalPrice, "pending", "delivery");
                 cart.clear();
                 menuPanel.removeAll();
                 menuPanel.revalidate();
                 menuPanel.repaint();
                 JOptionPane.showMessageDialog(frame, "Order placed successfully!");
             } else if (option == JOptionPane.OK_OPTION && (orderType.equals("Dine-in") || orderType.equals("Takeaway"))) {
-                customer.placeOrder(usernameField.getText(), (String) vendorComboBox.getSelectedItem(), cart, totalPrice, "pending");
+                customer.placeOrder(usernameField.getText(), (String) vendorComboBox.getSelectedItem(), cart, totalPrice, "pending", null);
                 cart.clear();
                 menuPanel.removeAll();
                 menuPanel.revalidate();
@@ -531,7 +538,7 @@ public class CustomerWindow extends Components {
                         }
                     }
                     double totalPrice = Double.parseDouble(orderData[2]);
-                    customer.placeOrder(usernameField.getText(), vendorName, cart, totalPrice, "pending");
+                    customer.placeOrder(usernameField.getText(), vendorName, cart, totalPrice, "pending", null);
                     JOptionPane.showMessageDialog(frame, "Order has been reordered successfully!");
 
                     // Refresh the orders display after reordering
@@ -615,7 +622,7 @@ public class CustomerWindow extends Components {
         int count = 1;
         for (String transaction : transactions) {
             JLabel transactionLabel = new JLabel("<html><pre>" + count +  ". On " + transaction.split(", ")[5] + ", you ordered <br>   " + transaction.split(", ")[6] + " of $" + transaction.split(", ")[2] + " from " + transaction.split(", ")[1] + ".</pre></html>");
-            transactionLabel.setBounds(0, yPosition, 300, 30);
+            transactionLabel.setBounds(0, yPosition, 330, 30);
             transactionLabel.setForeground(Color.WHITE);
             panel.add(transactionLabel);
             count++;

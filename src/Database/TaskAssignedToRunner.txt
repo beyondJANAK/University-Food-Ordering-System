@@ -1,5 +1,4 @@
-runner -> assigned -> janak, 1, 103.0, assigned, vendor notified, 2025-02-18, item56:2;
-runner -> assigned -> janak, 1, 103.0, assigned, vendor notified, 2025-02-20, item16:2;
-runner -> assigned -> janak, 1, 223.0, delivered, vendor notified, 2025-02-15, thukpa:1;chowmein:1;
-run -> assigned -> janak, 1, 223.0, delivered, vendor notified, 2025-02-15, thukpa:1;chowmein:1;
-run -> assigned -> janak, 1, 223.0, delivered, vendor notified, 2025-02-15, thukpa:1;chowmein:1;
+runner2 -> delivered -> janak, vendor1, 109.99, pending, vendor notified, 2025-03-01, Grilled Chicken:1;d
+runner1 -> delivered -> sadibya, vendor2, 107.49, pending, vendor notified, 2025-03-01, Thukpa:1;d
+runner2 -> delivered -> sadibya, vendor1, 108.49, pending, vendor notified, 2025-03-01, Pasta:1;d
+runner2 -> delivered -> sangam, vendor1, 125.98, pending, vendor notified, 2025-03-01, Pizza:2;d

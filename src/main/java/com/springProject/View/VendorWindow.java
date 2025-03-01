@@ -202,8 +202,12 @@ public class VendorWindow extends Components {
         int count = 1;
 
         for (String order : orders) {
+            final String finalOrder = order;
+            if (order.charAt(order.length() - 1) == 'd') {
+                order = order.substring(0, order.length() - 1);
+            }
             JLabel orderLabel = new JLabel("<html><pre>" + count +  ". In " + order.split(", ")[5] + " " + order.split(", ")[0] + " ordered <br>" + "   " + Arrays.toString(order.split(", ")[6].split(";")) +
-                                            "<br>   for $" + order.split(", ")[2] + ".</pre></html>");
+                    "<br>   for $" + order.split(", ")[2] + ".</pre></html>");
             orderLabel.setBounds(0, yPosition, 300, 45);
             orderLabel.setForeground(Color.WHITE);
             panel.add(orderLabel);
@@ -214,10 +218,14 @@ public class VendorWindow extends Components {
             acceptButton.setFocusable(false);
             acceptButton.setBorder(BorderFactory.createEtchedBorder());
             acceptButton.addActionListener(e -> {
-                vendor.acceptCancelOrder(usernameField.getText(), order.split(", ")[0], order, "accepted");
-                String assignedRunner = vendor.assignTaskToRunner(usernameField.getText(), order);
-                if(assignedRunner != null) JOptionPane.showMessageDialog(frame, "Order accepted successfully! Runner assigned: " + assignedRunner);
-                else JOptionPane.showMessageDialog(frame, "<html>Order accepted successfully!<br>No runner available at the moment, deliver the order yourself.<br>");
+                vendor.acceptCancelOrder(usernameField.getText(), finalOrder.split(", ")[0], finalOrder, "accepted");
+                if(finalOrder.charAt(finalOrder.length() - 1) == 'd'){
+                    String assignedRunner = vendor.assignTaskToRunner(usernameField.getText(), finalOrder);
+                    if(assignedRunner != null) JOptionPane.showMessageDialog(frame, "Order accepted successfully! Runner assigned: " + assignedRunner);
+                    else JOptionPane.showMessageDialog(frame, "<html>Order accepted successfully!<br>No runner available at the moment, deliver the order yourself.<br>");
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Order accepted successfully!");
+                }
                 acceptCancelOrder(frame); // Refresh the order list
             });
             panel.add(acceptButton);
@@ -227,7 +235,7 @@ public class VendorWindow extends Components {
             cancelButton.setFocusable(false);
             cancelButton.setBorder(BorderFactory.createEtchedBorder());
             cancelButton.addActionListener(e -> {
-                vendor.acceptCancelOrder(usernameField.getText(), order.split(", ")[0], order, "cancelled by vendor");
+                vendor.acceptCancelOrder(usernameField.getText(), finalOrder.split(", ")[0], finalOrder, "cancelled by vendor");
                 JOptionPane.showMessageDialog(frame, "Order cancelled successfully!");
                 acceptCancelOrder(frame); // Refresh the order list
             });
@@ -286,12 +294,17 @@ public class VendorWindow extends Components {
         int count = 1;
 
         for (String order : orders) {
+            final String finalOrder = order;
+            if (order.charAt(order.length() - 1) == 'd') {
+                order = order.substring(0, order.length() - 1);
+            }
             JLabel orderLabel = new JLabel("<html><pre>" + count +  ". In " + order.split(", ")[5] + " " + order.split(", ")[0] + " ordered <br>" + "   " + Arrays.toString(order.split(", ")[6].split(";")) +
                                             "<br>   for $" + order.split(", ")[2] + ".</pre></html>");
             orderLabel.setBounds(0, yPosition, 300, 45);
             orderLabel.setForeground(Color.WHITE);
             panel.add(orderLabel);
             count++;
+
 
             JButton updateStatusButton = new JButton("Update Status");
             updateStatusButton.setBounds(290, yPosition, 95, 25);
@@ -301,7 +314,7 @@ public class VendorWindow extends Components {
                 String[] statuses = {"being prepared", "being delivered", "taken by runner", "delivered"};
                 String newStatus = (String) JOptionPane.showInputDialog(frame, "Select new status:", "Update Order Status", JOptionPane.QUESTION_MESSAGE, null, statuses, statuses[0]);
                 if (newStatus != null) {
-                    vendor.acceptCancelOrder(usernameField.getText(), order.split(", ")[0], order, newStatus);
+                    vendor.acceptCancelOrder(usernameField.getText(), finalOrder.split(", ")[0], finalOrder, newStatus);
                     JOptionPane.showMessageDialog(frame, "Order status updated successfully!");
                     updateOrderStatus(frame); // Refresh the order list
                 }
@@ -416,6 +429,9 @@ public class VendorWindow extends Components {
 
         int count = 1;
         for (String order : orders) {
+            if (order.charAt(order.length() - 1) == 'd') {
+                order = order.substring(0, order.length() - 1);
+            }
             JLabel orderLabel = new JLabel("<html><pre>" + count +  ". In " + order.split(", ")[5] + " " + order.split(", ")[0] + " ordered <br>" + "   " + Arrays.toString(order.split(", ")[6].split(";")) +
                     "<br>   for $" + order.split(", ")[2] + ".</pre></html>");
             orderLabel.setBounds(0, yPosition, 300, 45);
@@ -595,6 +611,9 @@ public class VendorWindow extends Components {
             double orderRevenue = Double.parseDouble(order.split(", ")[2]) * 0.8; // Deduct 20%
             totalRevenue += orderRevenue;
 
+            if (order.charAt(order.length() - 1) == 'd') {
+                order = order.substring(0, order.length() - 1);
+            }
             JLabel orderLabel = new JLabel("<html><pre>" + count +  ". In " + order.split(", ")[5] + " " + order.split(", ")[0] + " ordered <br>" + "   " + Arrays.toString(order.split(", ")[6].split(";")) +
                     " for $" + order.split(", ")[2] + ". <br>=> Revenue after deducting runner's commission: $" + orderRevenue + ".</pre></html>");
             orderLabel.setBounds(0, yPosition, 400, 55);

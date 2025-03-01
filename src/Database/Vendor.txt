@@ -1,2 +1,2 @@
-vendor, vendor, asdf, 0
-1, 1, asdf, 0
+vendor1, vendor12#, vendor1@mail.com, 0
+vendor2, vendor22#, vendor2@mail.com, 0

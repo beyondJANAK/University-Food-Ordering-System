@@ -67,21 +67,38 @@ public class Customer {
         tempFile.renameTo(inputFile);
     }
 
-    public void placeOrder(String customerUsername, String vendorUsername, Map<String, Integer> items, double totalPrice, String status) {
+    public void placeOrder(String customerUsername, String vendorUsername, Map<String, Integer> items, double totalPrice, String status, String orderType) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/Database/Orders.txt", true))) {
             StringBuilder order = new StringBuilder();
-            order.append(customerUsername).append(", ")
-                    .append(vendorUsername).append(", ")
-                    .append(totalPrice).append(", ")
-                    .append(status).append(", ")
-                    .append("vendor not notified").append(", ").append(LocalDate.now()).append(", ");
+            if(orderType == null) {
+                order.append(customerUsername).append(", ")
+                        .append(vendorUsername).append(", ")
+                        .append(totalPrice).append(", ")
+                        .append(status).append(", ")
+                        .append("vendor not notified").append(", ").append(LocalDate.now()).append(", ");
 
-            for (Map.Entry<String, Integer> entry : items.entrySet()) {
-                order.append(entry.getKey()).append(":").append(entry.getValue()).append(";");
+                for (Map.Entry<String, Integer> entry : items.entrySet()) {
+                    order.append(entry.getKey()).append(":").append(entry.getValue()).append(";");
+                }
+
+                writer.write(order.toString());
+                writer.newLine();
+            } else if (orderType.equals("delivery")) {
+                order.append(customerUsername).append(", ")
+                        .append(vendorUsername).append(", ")
+                        .append(totalPrice).append(", ")
+                        .append(status).append(", ")
+                        .append("vendor not notified").append(", ").append(LocalDate.now()).append(", ");
+
+                for (Map.Entry<String, Integer> entry : items.entrySet()) {
+                    order.append(entry.getKey()).append(":").append(entry.getValue()).append(";");
+                }
+
+                order.append("d");
+
+                writer.write(order.toString());
+                writer.newLine();
             }
-
-            writer.write(order.toString());
-            writer.newLine();
         } catch (IOException e) {
             e.printStackTrace();
         }

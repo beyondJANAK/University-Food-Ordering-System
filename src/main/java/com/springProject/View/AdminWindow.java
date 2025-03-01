@@ -84,6 +84,13 @@ public class AdminWindow extends Components {
         frame.setVisible(true);
     }
 
+    private boolean isValidPassword(String password) {
+        return password.matches("^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=]).{8,}$");
+    }
+    private boolean isValidEmail(String email) {
+        return email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
+    }
+
 
     private void registerCustomer(MyFrame frame) {
         if (currentPanel != null) frame.getContentPane().remove(currentPanel);
@@ -95,14 +102,20 @@ public class AdminWindow extends Components {
         JTextField newEmailField = super.createTextField(panel, "Email:", 50, 160, 150, 160);
 
         JButton submitButton = super.createButton("Submit", 150, 210, 100, 40, e -> {
-            String username = newUsernameField.getText();
-            String password = new String(newPasswordField.getPassword());
-            String email = newEmailField.getText();
-            admin.saveCustomer(username, password, email);
-            JOptionPane.showMessageDialog(frame, "Customer added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            newUsernameField.setText("");
-            newPasswordField.setText("");
-            newEmailField.setText("");
+            if(newPasswordField.getPassword().length < 8 || !isValidPassword(new String(newPasswordField.getPassword()))) {
+                JOptionPane.showMessageDialog(frame, "Password must be at least 8 characters long and contain at least one digit, one letter, and one special character", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (!isValidEmail(newEmailField.getText())) {
+                JOptionPane.showMessageDialog(frame, "Invalid email format", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                String username = newUsernameField.getText();
+                String password = new String(newPasswordField.getPassword());
+                String email = newEmailField.getText();
+                admin.saveCustomer(username, password, email);
+                JOptionPane.showMessageDialog(frame, "Customer added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                newUsernameField.setText("");
+                newPasswordField.setText("");
+                newEmailField.setText("");
+            }
         });
         panel.add(submitButton);
 
@@ -166,14 +179,20 @@ public class AdminWindow extends Components {
         JTextField newEmailField = super.createTextField(panel, "Email:", 50, 160, 150, 160);
 
         JButton submitButton = super.createButton("Submit", 150, 210, 100, 40, e -> {
-            String username = newUsernameField.getText();
-            String password = new String(newPasswordField.getPassword());
-            String email = newEmailField.getText();
-            admin.saveVendor(username, password, email);
-            JOptionPane.showMessageDialog(frame, "Vendor added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            newUsernameField.setText("");
-            newPasswordField.setText("");
-            newEmailField.setText("");
+            if(newPasswordField.getPassword().length < 8 || !isValidPassword(new String(newPasswordField.getPassword()))) {
+                JOptionPane.showMessageDialog(frame, "Password must be at least 8 characters long and contain at least one digit, one letter, and one special character", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (!isValidEmail(newEmailField.getText())) {
+                JOptionPane.showMessageDialog(frame, "Invalid email format", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                String username = newUsernameField.getText();
+                String password = new String(newPasswordField.getPassword());
+                String email = newEmailField.getText();
+                admin.saveVendor(username, password, email);
+                JOptionPane.showMessageDialog(frame, "Vendor added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                newUsernameField.setText("");
+                newPasswordField.setText("");
+                newEmailField.setText("");
+            }
         });
         panel.add(submitButton);
 
@@ -237,14 +256,20 @@ public class AdminWindow extends Components {
         JTextField newEmailField = super.createTextField(panel, "Email:", 50, 160, 150, 160);
 
         JButton submitButton = super.createButton("Submit", 150, 210, 100, 40, e -> {
-            String username = newUsernameField.getText();
-            String password = new String(newPasswordField.getPassword());
-            String email = newEmailField.getText();
-            admin.saveRunner(username, password, email);
-            JOptionPane.showMessageDialog(frame, "Runner added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-            newUsernameField.setText("");
-            newPasswordField.setText("");
-            newEmailField.setText("");
+            if(newPasswordField.getPassword().length < 8 || !isValidPassword(new String(newPasswordField.getPassword()))) {
+                JOptionPane.showMessageDialog(frame, "Password must be at least 8 characters long and contain at least one digit, one letter, and one special character", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (!isValidEmail(newEmailField.getText())) {
+                JOptionPane.showMessageDialog(frame, "Invalid email format", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                String username = newUsernameField.getText();
+                String password = new String(newPasswordField.getPassword());
+                String email = newEmailField.getText();
+                admin.saveRunner(username, password, email);
+                JOptionPane.showMessageDialog(frame, "Runner added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                newUsernameField.setText("");
+                newPasswordField.setText("");
+                newEmailField.setText("");
+            }
         });
         panel.add(submitButton);
 
