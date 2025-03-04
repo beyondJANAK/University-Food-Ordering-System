@@ -40,10 +40,11 @@ public class Runner {
                     notifications.append("You have been assigned a new task: ").append(data[2]).append("\n");
                 }
             }
+            return notifications;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return notifications;
+        return null;
     }
 
     public ArrayList<String> getTasks(String runnerUsername, boolean updatable, boolean isDelivered) {
@@ -133,19 +134,33 @@ public class Runner {
     public ArrayList<String> getReview(String runnerName) {
         ArrayList<String> reviews = new ArrayList<>();
         ArrayList<String> deliveredOrders = getTasks(runnerName, false, true);
+
         try (BufferedReader reviewReader = new BufferedReader(new FileReader("src/Database/Feedback.txt"))) {
             String line;
-            int count = 0;
-            while ((line = reviewReader.readLine()) != null && count < deliveredOrders.size()) {
-                String[] data = line.split(" -> ");
-                if (data.length > 1 && data[0].equals(deliveredOrders.get(count).split(" -> ")[2])) {
-                    reviews.add(line);
+            while ((line = reviewReader.readLine()) != null) {
+                String[] feedbackParts = line.split(" -> ");
+                if (feedbackParts.length < 2) continue;
+
+                String feedbackData = feedbackParts[0];
+                String[] feedbackFields = feedbackData.split(", ");
+
+                for (String order : deliveredOrders) {
+                    String[] orderFields = order.split(" -> ")[2].split(", ");
+
+                    if (feedbackFields[0].equals(orderFields[0]) &&
+                            feedbackFields[1].equals(orderFields[1]) &&
+                            feedbackFields[5].equals(orderFields[5])) {
+                        reviews.add(line);
+                        break;
+                    }
                 }
-                count++;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         return reviews;
     }
+
+
+
 }

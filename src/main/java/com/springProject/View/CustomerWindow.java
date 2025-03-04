@@ -129,6 +129,8 @@ public class CustomerWindow extends Components {
 
 
         JButton loadMenuButton = super.createButton("Load Menu", 253, 20, 90, 32, null);
+        loadMenuButton.setBackground(new Color(10, 91, 28));
+        loadMenuButton.setForeground(Color.WHITE);
         panel.add(loadMenuButton);
 
         JPanel menuPanel = new JPanel();
@@ -150,6 +152,8 @@ public class CustomerWindow extends Components {
         panel.add(orderTypeComboBox);
 
         JButton placeOrderButton = super.createButton("Place Order", 119, 470, 115, 32, null);
+        placeOrderButton.setBackground(new Color(17, 72, 125));
+        placeOrderButton.setForeground(Color.WHITE);
         placeOrderButton.addActionListener(e -> placeOrderActionListener(frame, menuPanel, cart, prices, vendorComboBox, orderTypeComboBox.getSelectedItem().toString()));
         panel.add(placeOrderButton);
 
@@ -184,7 +188,11 @@ public class CustomerWindow extends Components {
                         menuPanel.add(itemLabel);
 
                         JButton decrementButton = super.createButton("-", 120, yPosition, 41, 25, null);
+                        decrementButton.setBackground(new Color(220, 53, 69));
+                        decrementButton.setForeground(Color.WHITE);
                         JButton incrementButton = super.createButton("+", 192, yPosition, 41, 25, null);
+                        incrementButton.setBackground(new Color(10, 91, 28));
+                        incrementButton.setForeground(Color.WHITE);
                         JLabel quantityLabel = new JLabel("0");
                         quantityLabel.setBounds(175, yPosition, 30, 25); // Adjusted size
                         quantityLabel.setForeground(Color.WHITE);
@@ -207,6 +215,8 @@ public class CustomerWindow extends Components {
                         });
 
                         JButton addItemButton = super.createButton("Add to Cart", 253, yPosition, 90, 25, null);
+                        addItemButton.setBackground(new Color(17, 72, 125));
+                        addItemButton.setForeground(Color.WHITE);
                         addItemButton.addActionListener(ev -> {
                             if (quantity[0] > 0) {
                                 cart.put(itemName, cart.getOrDefault(itemName, 0) + quantity[0]);
@@ -358,6 +368,7 @@ public class CustomerWindow extends Components {
         JLabel statusLabel = new JLabel("Cancel Order:");
         statusLabel.setFont(new Font("Arial", Font.BOLD, 20));
         statusLabel.setBounds(80, 15, 200, 30);
+        statusLabel.setBackground(new Color(220, 53, 69));
         statusLabel.setForeground(Color.WHITE);
         panel.add(statusLabel);
 
@@ -404,6 +415,8 @@ public class CustomerWindow extends Components {
         panel.add(orderDetailsLabel);
 
         JButton cancelButton = super.createButton("Cancel Order", 25, 170, 90, 32, null);
+        cancelButton.setBackground(new Color(220, 53, 69));
+        cancelButton.setForeground(Color.WHITE);
         cancelButton.addActionListener(e -> {
             customer.cancelOrder(usernameField.getText(), lastOrder);
             JOptionPane.showMessageDialog(frame, "Order canceled successfully.");
@@ -519,6 +532,8 @@ public class CustomerWindow extends Components {
             count++;
 
             JButton reorderButton = super.createButton("Reorder", 302, yPosition, 80, 20, null);
+            reorderButton.setBackground(new Color(17, 72, 125));
+            reorderButton.setForeground(Color.WHITE);
             reorderButton.addActionListener(e -> {
                 String[] orderData = order.split(", ");
                 if (orderData.length < 7) {
@@ -551,6 +566,8 @@ public class CustomerWindow extends Components {
             panel.add(reorderButton);
 
             JButton feedbackButton = super.createButton("Feedback", 302, yPosition + 22, 80, 20, null);
+            feedbackButton.setBackground(new Color(10, 91, 28));
+            feedbackButton.setForeground(Color.WHITE);
             feedbackButton.addActionListener(e -> {
                 String feedback = JOptionPane.showInputDialog(frame, "Please enter your feedback for this order:", "Order Feedback", JOptionPane.PLAIN_MESSAGE);
                 if (feedback != null && !feedback.trim().isEmpty()) {

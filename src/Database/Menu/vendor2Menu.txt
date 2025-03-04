@@ -1,10 +1,9 @@
 Momo, 6.99
 Sekuwa, 9.99
 Thukpa, 7.49
-Butter Chicken, 10.99
 Paneer Tikka, 8.99
 Masala Dosa, 6.49
-Chole Bhature, 7.99
+Chole Bhature, 7.2
 Aloo Paratha, 5.49
 Biryani, 11.99
 Samosa, 2.49

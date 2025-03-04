@@ -9,6 +9,12 @@ public class MainWindow {
     public MainWindow() {
         MyFrame frame = new MyFrame("Food Ordering System");
 
+        JLabel label = new JLabel("Welcome to Food Ordering System");
+        label.setBounds(145, 140, 400, 50);
+        label.setFont(new Font("Arial", Font.ITALIC, 20));
+        label.setForeground(new Color(50, 149, 248));
+        frame.add(label);
+
         JLabel loginLabel = new JLabel("Login as:");
         loginLabel.setBounds(250, 200, 150, 30);
         loginLabel.setFont(new Font("Arial", Font.BOLD, 16));

@@ -111,6 +111,8 @@ public class VendorWindow extends Components {
         JButton addItemButton = new JButton("Add Item");
         addItemButton.setBounds(60, 20, 90, 32);
         addItemButton.setFocusable(false);
+        addItemButton.setBackground(new Color(10, 91, 28));
+        addItemButton.setForeground(Color.WHITE);
         addItemButton.setBorder(BorderFactory.createEtchedBorder());
         addItemButton.addActionListener(e -> showAddItemPopup());
         panel.add(addItemButton);
@@ -128,6 +130,8 @@ public class VendorWindow extends Components {
             JButton updateButton = new JButton("Update");
             updateButton.setBounds(200, yPosition, 70, 25);
             updateButton.setFocusable(false);
+            updateButton.setBackground(new Color(17, 72, 125));
+            updateButton.setForeground(Color.WHITE);
             updateButton.setBorder(BorderFactory.createEtchedBorder());
             updateButton.addActionListener(e -> showUpdateItemPopup(item));
             panel.add(updateButton);
@@ -135,6 +139,8 @@ public class VendorWindow extends Components {
             JButton deleteButton = new JButton("Delete");
             deleteButton.setBounds(280, yPosition, 70, 25);
             deleteButton.setFocusable(false);
+            deleteButton.setBackground(new Color(220, 53, 69));
+            deleteButton.setForeground(Color.WHITE);
             deleteButton.setBorder(BorderFactory.createEtchedBorder());
             deleteButton.addActionListener(e -> {
                 boolean success = vendor.deleteItem(usernameField.getText(), item.split(", ")[0]);
@@ -216,6 +222,8 @@ public class VendorWindow extends Components {
             JButton acceptButton = new JButton("Accept");
             acceptButton.setBounds(302, yPosition, 80, 20);
             acceptButton.setFocusable(false);
+            acceptButton.setBackground(new Color(17, 72, 125));
+            acceptButton.setForeground(Color.WHITE);
             acceptButton.setBorder(BorderFactory.createEtchedBorder());
             acceptButton.addActionListener(e -> {
                 vendor.acceptCancelOrder(usernameField.getText(), finalOrder.split(", ")[0], finalOrder, "accepted");
@@ -233,6 +241,8 @@ public class VendorWindow extends Components {
             JButton cancelButton = new JButton("Cancel");
             cancelButton.setBounds(302, yPosition + 22, 80, 20);
             cancelButton.setFocusable(false);
+            cancelButton.setBackground(new Color(220, 53, 69));
+            cancelButton.setForeground(Color.WHITE);
             cancelButton.setBorder(BorderFactory.createEtchedBorder());
             cancelButton.addActionListener(e -> {
                 vendor.acceptCancelOrder(usernameField.getText(), finalOrder.split(", ")[0], finalOrder, "cancelled by vendor");
@@ -294,7 +304,10 @@ public class VendorWindow extends Components {
         int count = 1;
 
         for (String order : orders) {
+
             final String finalOrder = order;
+
+
             if (order.charAt(order.length() - 1) == 'd') {
                 order = order.substring(0, order.length() - 1);
             }
@@ -309,6 +322,8 @@ public class VendorWindow extends Components {
             JButton updateStatusButton = new JButton("Update Status");
             updateStatusButton.setBounds(290, yPosition, 95, 25);
             updateStatusButton.setFocusable(false);
+            updateStatusButton.setBackground(new Color(17, 72, 125));
+            updateStatusButton.setForeground(Color.WHITE);
             updateStatusButton.setBorder(BorderFactory.createEtchedBorder());
             updateStatusButton.addActionListener(e -> {
                 String[] statuses = {"being prepared", "being delivered", "taken by runner", "delivered"};
@@ -345,7 +360,6 @@ public class VendorWindow extends Components {
         panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Order History", TitledBorder.LEFT, TitledBorder.TOP, new Font("Arial", Font.BOLD, 14), Color.WHITE));
         panel.setLayout(null);
 
-        // Wrap panel inside a scroll pane with conditional scrolling
         JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBounds(190, 20, 450, 500);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
@@ -594,7 +608,6 @@ public class VendorWindow extends Components {
     }
 
     private void displayRevenue(JPanel panel, ArrayList<String> orders, JComboBox<String> filterComboBox) {
-        // Remove only order-related components, not the filterComboBox
         Component[] components = panel.getComponents();
         for (Component c : components) {
             if (c instanceof JLabel && !c.equals(filterComboBox)) {
@@ -602,7 +615,7 @@ public class VendorWindow extends Components {
             }
         }
 
-        int yPosition = 72; // Start below the combobox
+        int yPosition = 72;
         int maxHeight = yPosition;
         double totalRevenue = 0.0;
 
@@ -627,7 +640,8 @@ public class VendorWindow extends Components {
 
         JLabel totalRevenueLabel = new JLabel("Total Revenue: $" + totalRevenue);
         totalRevenueLabel.setBounds(0, yPosition, 300, 45);
-        totalRevenueLabel.setForeground(Color.WHITE);
+        totalRevenueLabel.setForeground(new Color(10, 91, 28)); // Green color
+        totalRevenueLabel.setFont(new Font("Arial", Font.BOLD, 15)); // Bold and bigger
         panel.add(totalRevenueLabel);
 
         panel.setPreferredSize(new Dimension(400, Math.max(400, maxHeight)));

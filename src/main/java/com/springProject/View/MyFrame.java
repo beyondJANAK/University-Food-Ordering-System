@@ -3,7 +3,7 @@ package com.springProject.View;
 import javax.swing.*;
 import java.awt.*;
 
-public class MyFrame extends JFrame {
+ class MyFrame extends JFrame {
     public MyFrame(String title) {
         this.setTitle(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -117,6 +117,8 @@ public class AdminWindow extends Components {
                 newEmailField.setText("");
             }
         });
+        submitButton.setBackground(new Color(17, 72, 125));
+        submitButton.setForeground(Color.WHITE);
         panel.add(submitButton);
 
         frame.getContentPane().add(panel, "registerCustomer");
@@ -144,16 +146,18 @@ public class AdminWindow extends Components {
             JButton deleteButton = new JButton("Delete");
             deleteButton.setBounds(200, yPosition, 100, 30);
             deleteButton.setFocusable(false);
+            deleteButton.setBackground(new Color(220, 53, 69));
+            deleteButton.setForeground(Color.WHITE);
             deleteButton.addActionListener(e -> {
                 boolean success = admin.deleteCustomer(username);
                 if (success) {
-                    JOptionPane.showMessageDialog(frame, "Vendor deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Customer deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                     panel.remove(usernameLabel);
                     panel.remove(deleteButton);
                     frame.revalidate();
                     frame.repaint();
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Failed to delete Vendor", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Failed to delete Customer", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             });
             panel.add(deleteButton);
@@ -194,6 +198,8 @@ public class AdminWindow extends Components {
                 newEmailField.setText("");
             }
         });
+        submitButton.setBackground(new Color(17, 72, 125));
+        submitButton.setForeground(Color.WHITE);
         panel.add(submitButton);
 
         frame.getContentPane().add(panel, JLayeredPane.POPUP_LAYER);
@@ -221,16 +227,18 @@ public class AdminWindow extends Components {
             JButton deleteButton = new JButton("Delete");
             deleteButton.setBounds(200, yPosition, 100, 30);
             deleteButton.setFocusable(false);
+            deleteButton.setBackground(new Color(220, 53, 69));
+            deleteButton.setForeground(Color.WHITE);
             deleteButton.addActionListener(e -> {
                 boolean success = admin.deleteVendor(username);
                 if (success) {
-                    JOptionPane.showMessageDialog(frame, "Customer deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Vendor deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                     panel.remove(usernameLabel);
                     panel.remove(deleteButton);
                     frame.revalidate();
                     frame.repaint();
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Failed to delete customer", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Failed to delete Vendor", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             });
             panel.add(deleteButton);
@@ -271,6 +279,8 @@ public class AdminWindow extends Components {
                 newEmailField.setText("");
             }
         });
+        submitButton.setBackground(new Color(17, 72, 125));
+        submitButton.setForeground(Color.WHITE);
         panel.add(submitButton);
 
         frame.getContentPane().add(panel, JLayeredPane.POPUP_LAYER);
@@ -298,6 +308,8 @@ public class AdminWindow extends Components {
             JButton deleteButton = new JButton("Delete");
             deleteButton.setBounds(200, yPosition, 100, 30);
             deleteButton.setFocusable(false);
+            deleteButton.setBackground(new Color(220, 53, 69));
+            deleteButton.setForeground(Color.WHITE);
             deleteButton.addActionListener(e -> {
                 boolean success = admin.deleteRunner(username);
                 if (success) {
@@ -307,7 +319,7 @@ public class AdminWindow extends Components {
                     frame.revalidate();
                     frame.repaint();
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Failed to delete customer", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Failed to delete Runner", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             });
             panel.add(deleteButton);
@@ -361,6 +373,8 @@ public class AdminWindow extends Components {
                     JOptionPane.showMessageDialog(frame, "Failed to topup credit", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             });
+            topupButton.setBackground(new Color(17, 72, 125));
+            topupButton.setForeground(Color.WHITE);
             panel.add(topupButton);
 
             yPosition += 40;

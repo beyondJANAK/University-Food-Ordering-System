@@ -2,3 +2,10 @@ runner2 -> delivered -> janak, vendor1, 109.99, pending, vendor notified, 2025-0
 runner1 -> delivered -> sadibya, vendor2, 107.49, pending, vendor notified, 2025-03-01, Thukpa:1;d
 runner2 -> delivered -> sadibya, vendor1, 108.49, pending, vendor notified, 2025-03-01, Pasta:1;d
 runner2 -> delivered -> sangam, vendor1, 125.98, pending, vendor notified, 2025-03-01, Pizza:2;d
+runner1 -> delivered -> janak, vendor1, 132.97, pending, vendor notified, 2025-03-04, Sushi Roll:3;d
+runner2 -> assigned -> janak, vendor1, 108.49, pending, vendor notified, 2025-03-04, Pasta:1;d
+runner1 -> delivered -> janak, vendor1, 125.98, pending, vendor notified, 2025-03-04, Pizza:2;d
+runner1 -> declined -> janak, vendor1, 110.99, pending, vendor notified, 2025-03-04, Sushi Roll:1;d
+runner2 -> assigned -> janak, vendor1, 109.1, pending, vendor notified, 2025-03-04, Grilled Chicken:1;d
+runner2 -> assigned -> janak, vendor1, 112.99, pending, vendor notified, 2025-03-04, Pizza:1;d
+runner2 -> assigned -> janak, vendor1, 110.99, pending, vendor notified, 2025-03-04, Sushi Roll:1;d

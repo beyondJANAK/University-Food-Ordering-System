@@ -3,3 +3,16 @@ janak, vendor1, 109.99, delivered, vendor notified, 2025-03-01, Grilled Chicken:
 sadibya, vendor2, 107.49, delivered, vendor notified, 2025-03-01, Thukpa:1;d
 sadibya, vendor1, 108.49, delivered, vendor notified, 2025-03-01, Pasta:1;d
 sangam, vendor1, 125.98, delivered, vendor notified, 2025-03-01, Pizza:2;d
+janak, vendor1, 5.99, accepted, vendor notified, 2025-03-04, Burger:1;
+janak, vendor1, 5.99, accepted, vendor notified, 2025-03-04, Burger:1;
+janak, vendor1, 132.97, delivered, vendor notified, 2025-03-04, Sushi Roll:3;d
+janak, vendor1, 108.49, accepted, vendor notified, 2025-03-04, Pasta:1;d
+janak, vendor1, 110.99, cancelled by customer, vendor notified, 2025-03-04, Sushi Roll:1;d
+janak, vendor1, 8.49, cancelled by customer, vendor notified, 2025-03-04, Pasta:1;
+janak, vendor1, 125.98, cancelled by customer, vendor not notified, 2025-03-04, Pizza:2;d
+janak, vendor1, 125.98, delivered, vendor notified, 2025-03-04, Pizza:2;d
+janak, vendor1, 8.58, cancelled by vendor, vendor notified, 2025-03-04, Ice Cream:1;Tacos:1;
+janak, vendor1, 110.99, accepted, vendor notified, 2025-03-04, Sushi Roll:1;d
+janak, vendor1, 109.1, accepted, vendor notified, 2025-03-04, Grilled Chicken:1;d
+janak, vendor1, 112.99, accepted, vendor notified, 2025-03-04, Pizza:1;d
+janak, vendor1, 109.99, pending, vendor not notified, 2025-03-04, Grilled Chicken:1;

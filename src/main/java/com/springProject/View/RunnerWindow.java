@@ -93,7 +93,7 @@ public class RunnerWindow extends Components {
 
     private void runnerNotification(MyFrame frame) {
         StringBuilder message = runner.notification(usernameField.getText());
-        if (message != null) JOptionPane.showMessageDialog(frame, message.toString(), "Notifications", JOptionPane.INFORMATION_MESSAGE);
+        if (message != null && !message.toString().isEmpty()) JOptionPane.showMessageDialog(frame, message.toString(), "Notifications", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void acceptDeclineTask(MyFrame frame) {
@@ -134,6 +134,8 @@ public class RunnerWindow extends Components {
                 JButton declineButton = new JButton("Decline");
                 acceptButton.setBounds(302, yPosition, 80, 20);
                 acceptButton.setBorder(BorderFactory.createEtchedBorder());
+                acceptButton.setBackground(new Color(17, 72, 125));
+                acceptButton.setForeground(Color.WHITE);
                 acceptButton.setFocusable(false);
                 acceptButton.addActionListener(e -> {
                     runner.acceptDeclineTask(usernameField.getText(), taskParts[2], "accepted");
@@ -144,6 +146,8 @@ public class RunnerWindow extends Components {
 
                 declineButton.setBounds(302, yPosition + 24, 80, 20);
                 declineButton.setBorder(BorderFactory.createEtchedBorder());
+                declineButton.setBackground(new Color(220, 53, 69));
+                declineButton.setForeground(Color.WHITE);
                 declineButton.setFocusable(false);
                 declineButton.addActionListener(e -> {
                     runner.acceptDeclineTask(usernameField.getText(), taskParts[2], "declined");
@@ -198,6 +202,8 @@ public class RunnerWindow extends Components {
             JButton updateStatusButton = new JButton("Update Status");
             updateStatusButton.setBounds(290, yPosition, 95, 25);
             updateStatusButton.setFocusable(false);
+            updateStatusButton.setBackground(new Color(17, 72, 125));
+            updateStatusButton.setForeground(Color.WHITE);
             updateStatusButton.setBorder(BorderFactory.createEtchedBorder());
             updateStatusButton.addActionListener(e -> {
                 String[] statuses = {"being prepared", "being delivered", "at your location", "delivered"};
@@ -497,7 +503,8 @@ public class RunnerWindow extends Components {
 
         JLabel totalRevenueLabel = new JLabel("Total Revenue: $" + totalRevenue);
         totalRevenueLabel.setBounds(0, yPosition, 300, 45);
-        totalRevenueLabel.setForeground(Color.WHITE);
+        totalRevenueLabel.setForeground(new Color(10, 91, 28)); // Green color
+        totalRevenueLabel.setFont(new Font("Arial", Font.BOLD, 15)); // Bold and bigger
         panel.add(totalRevenueLabel);
 
         panel.setPreferredSize(new Dimension(400, Math.max(400, maxHeight)));
